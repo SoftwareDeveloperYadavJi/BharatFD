@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo
+    container_name: mongo_container
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis
+    container_name: redis_container
+    ports:
+      - 6379:6379
+    command: redis-server --appendonly yes
+
+volumes:
+  mongo_data:
+
