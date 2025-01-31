@@ -15,14 +15,25 @@ export const addFAQ = async (req, res) => {
 
 
 
-export const getFAQBylng = async (req, res) => {
-    const lng = req.query.lng || "en";
+export const getFAQs = async (req, res) => {
     try {
-        // get FAQ by language
+        const lang = req.query.lang || "en"; // Default to English if no language provided
+        const faqs = await FAQ.find();
 
+        // Map over each FAQ and return only the requested language
+        const translatedFaqs = faqs.map((faq) => ({
+            _id: faq._id,
+            question: faq[`question_${lang}`] || faq.question, // Fallback to English
+            answer: faq[`answer_${lang}`] || faq.answer, // Fallback to English
+            createdAt: faq.createdAt,
+            updatedAt: faq.updatedAt,
+        }));
+
+        res.json(translatedFaqs);
     } catch (error) {
-        res.status(500).send({ message: "Error getting FAQ", error: error.message });
+        res.status(500).json({ message: "Error fetching FAQs", error: error.message });
     }
 };
+
 
 
