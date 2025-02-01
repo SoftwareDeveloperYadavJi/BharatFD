@@ -56,7 +56,7 @@ backend-faq-service/
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/backend-faq-service.git
+   git clone https://github.com/SoftwareDeveloperYadavJi/BharatFD
    cd backend-faq-service
    ```
 
