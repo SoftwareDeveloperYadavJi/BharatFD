@@ -26,7 +26,7 @@ export const addFAQ = async (req, res) => {
 export const getFAQs = async (req, res) => {
     try {
         const lang = req.query.lang || "en"; // Default to English
-
+        console.log(lang);
         // Check Redis Cache
         const cacheKey = `faqs:${lang}`;
         const cachedFAQs = await redis.get(cacheKey);

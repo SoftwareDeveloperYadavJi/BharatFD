@@ -13,9 +13,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
-
-
-
 // routes
 app.use('/faq', faqRouter);
 
@@ -27,7 +24,7 @@ app.get('/healthcheck', (req, res) => {
 });
 
 
-
+export default app;
 
 
 

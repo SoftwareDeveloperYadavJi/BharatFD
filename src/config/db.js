@@ -1,23 +1,22 @@
 import mongoose from 'mongoose';
 
-
 /**
  * Establishes a connection to the MongoDB database
  *
  * @async
  * @function
+ * @param {string} [uri] - Optional MongoDB URI (defaults to process.env.MONGODB_URI)
  * @returns {Promise<void>}
  */
-const connectDB = async () => {
+const connectDB = async (uri) => {
     try {
-        // Use a more descriptive variable name for the connection
-        const dbConnection = await mongoose.connect(process.env.MONGODB_URI, {
+        const dbConnection = await mongoose.connect(uri || process.env.MONGODB_URI, {
+            // useNewUrlParser: true,
+            // useUnifiedTopology: true,
         });
 
-        // Log the host of the connected database for better debugging
         console.log(`MongoDB Connected: ${dbConnection.connection.host}`);
     } catch (error) {
-        // Use a more descriptive error message and exit the process on failure
         console.error(`Error connecting to MongoDB: ${error.message}`);
         process.exit(1); // Exit the process with a failure code
     }
