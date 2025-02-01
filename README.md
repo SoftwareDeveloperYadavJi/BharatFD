@@ -56,8 +56,8 @@ backend-faq-service/
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/backend-faq-service.git
-   cd backend-faq-service
+    git clone https://github.com/SoftwareDeveloperYadavJi/BharatFD
+   
    ```
 
 2. **Install Dependencies**
@@ -89,19 +89,135 @@ backend-faq-service/
 
 ## API Endpoints
 
+### Authentication
+- **Register User**
+  - `POST /api/auth/register`
+  - Request Body: 
+    ```json
+    {
+      "email": "user@example.com",
+      "password": "securePassword123",
+      "name": "John Doe"
+    }
+    ```
+
+- **Login**
+  - `POST /api/auth/login`
+  - Request Body:
+    ```json
+    {
+      "email": "user@example.com",
+      "password": "securePassword123"
+    }
+    ```
+  - Response: JWT token for authentication
+
+### FAQ Management
 - **Add FAQ**
   - `POST /api/faqs`
-  - Request Body: `{ "question": "What is Node.js?", "answer": "Node.js is a JavaScript runtime." }`
+  - Auth: Required (Admin only)
+  - Request Body:
+    ```json
+    {
+      "question": "What is Node.js?",
+      "answer": "Node.js is a JavaScript runtime.",
+      "category": "technical",
+      "tags": ["nodejs", "javascript"]
+    }
+    ```
 
 - **Get FAQs**
-  - `GET /api/faqs?lang=en`
+  - `GET /api/faqs`
+  - Query Parameters:
+    - `lang`: Language code (e.g., 'en', 'es')
+    - `category`: Filter by category
+    - `page`: Page number for pagination
+    - `limit`: Items per page
+    - `search`: Search term for questions/answers
+
+- **Get FAQ by ID**
+  - `GET /api/faqs/:id`
+  - Response: Single FAQ object
 
 - **Update FAQ**
   - `PUT /api/faqs/:id`
-  - Request Body: `{ "question": "Updated question", "answer": "Updated answer" }`
+  - Auth: Required (Admin only)
+  - Request Body:
+    ```json
+    {
+      "question": "Updated question",
+      "answer": "Updated answer",
+      "category": "updated-category",
+      "tags": ["updated", "tags"]
+    }
+    ```
 
 - **Delete FAQ**
   - `DELETE /api/faqs/:id`
+  - Auth: Required (Admin only)
+
+### Admin Operations
+- **Get All Users**
+  - `GET /api/admin/users`
+  - Auth: Required (Admin only)
+  - Query Parameters:
+    - `page`: Page number
+    - `limit`: Users per page
+
+- **Update User Role**
+  - `PUT /api/admin/users/:userId/role`
+  - Auth: Required (Admin only)
+  - Request Body:
+    ```json
+    {
+      "role": "admin"
+    }
+    ```
+
+### User Operations
+- **Get User Profile**
+  - `GET /api/users/profile`
+  - Auth: Required
+
+- **Update User Profile**
+  - `PUT /api/users/profile`
+  - Auth: Required
+  - Request Body:
+    ```json
+    {
+      "name": "Updated Name",
+      "email": "newemail@example.com"
+    }
+    ```
+
+- **Change Password**
+  - `PUT /api/users/change-password`
+  - Auth: Required
+  - Request Body:
+    ```json
+    {
+      "currentPassword": "oldPassword123",
+      "newPassword": "newPassword123"
+    }
+    ```
+
+### Response Formats
+All API responses follow this structure:
+```json
+{
+  "success": true,
+  "data": {}, // Response data
+  "message": "Operation successful",
+  "error": null // Error message if any
+}
+```
+
+### Error Handling
+- 400: Bad Request - Invalid input
+- 401: Unauthorized - Invalid/missing token
+- 403: Forbidden - Insufficient permissions
+- 404: Not Found - Resource doesn't exist
+- 500: Internal Server Error
 
 ## Architecture
 
