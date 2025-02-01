@@ -11,9 +11,10 @@ export const addFAQ = async (req, res) => {
     try {
         const { question, answer } = req.body;
         const faq = new FAQ({ question, answer });
-        // claen radis cache
+        // Clear Redis cache
         await redis.del("faqs:*");
         await faq.save();
+        // Return the newly created FAQ
         res.status(200).json({ message: "FAQ Created Successfully", faq });
     } catch (error) {
         res.status(500).json({ message: "Error adding FAQ", error: error.message });
@@ -48,7 +49,7 @@ export const getFAQs = async (req, res) => {
         }));
 
         // Store in Redis (Cache for 10 minutes)
-        await redis.setex(cacheKey, 600, JSON.stringify(translatedFaqs));
+        // await redis.setex(cacheKey, 600, JSON.stringify(translatedFaqs));
 
         res.json(translatedFaqs);
     } catch (error) {
