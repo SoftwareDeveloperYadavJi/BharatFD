@@ -3,7 +3,7 @@ import { generateOTP } from "../services/otp.js";
 
 
 
-export const addAdmin = async (req, res) => {
+export const adminRegistation = async (req, res) => {
     const { username, password, email, role } = req.body;
 
     if (!username || !password || !email || !role) {
@@ -18,7 +18,6 @@ export const addAdmin = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
-
 
 
 export const verifyOTP = async (req, res) => {
@@ -39,5 +38,23 @@ export const verifyOTP = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+
+export const adminLogin = async (req, res) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+        return res.status(400).json({ message: "Missing required fields" });
+    }
+    try {
+        const admin = await Admin.findOne({ username, password });
+        if (!admin) return res.status(401).json({ message: "Invalid credentials" });
+        const token = jwt.sign({ username: admin.username }, process.env.JWT_SECRET);
+        res.status(200).json({ message: "Login successful", token });
+    } catch (error) {
+        console.error("Error logging in:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
 
 

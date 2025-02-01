@@ -14,7 +14,7 @@ export const addFAQ = async (req, res) => {
         // claen radis cache
         await redis.del("faqs:*");
         await faq.save();
-        res.status(201).json({ message: "FAQ Created Successfully", faq });
+        res.status(200).json({ message: "FAQ Created Successfully", faq });
     } catch (error) {
         res.status(500).json({ message: "Error adding FAQ", error: error.message });
     }
